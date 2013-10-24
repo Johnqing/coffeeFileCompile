@@ -20,8 +20,9 @@ function walk(path, callback){
 	}
 
 
-var CoffeeCompile = function(){
-	this.public_dir = __dirname+'/src/www/front/';
+var CoffeeCompile = function(opts){
+	this.public_dir = __dirname + opts.public_dir;
+	this.produce = opts.produce;
 	this.init()
 }
 
@@ -31,7 +32,7 @@ CoffeeCompile.prototype = {
 
 		walk(that.public_dir + 'other', function(root_path, item){
 			var input = root_path+'/',
-				outputPath = root_path.replace(/other/g, 'js'),
+				outputPath = root_path.replace(/other/g, that.produce),
 			input = path.resolve(input);
 			output = path.resolve(outputPath+'/')
 			that.toJs(input, output)
@@ -51,4 +52,7 @@ CoffeeCompile.prototype = {
 }
 
 
-new CoffeeCompile()
+new CoffeeCompile({
+	public_dir: '/src/www/front/',
+	produce: 'js'
+})
